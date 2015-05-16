@@ -293,6 +293,40 @@
 	   (tomatinho-display-tubes)
 	 (tomatinho-display-history))))))
 
+;;;;;;;;;;;;;;;;;;;;;
+;; Pomodoro sheets ;;
+;;;;;;;;;;;;;;;;;;;;;
+
+(defun to_do_today ()
+  "Create a pomodoro To Do Today buffer."
+  (interactive)
+  (switch-to-buffer (set-buffer (find-file "C:/Windows/Temp/To_Do_Today.org")))
+  (insert "* Activity\n")
+  (insert "** [] [] []\n")
+  (insert "* Unplanned & Urgent\n")
+  (goto-char 3))
+
+(defun activity_inventory ()
+  "Create a pomodoro Activity Inventory buffer."
+  (interactive)
+  (switch-to-buffer (set-buffer (find-file "C:/Windows/Temp/ Activity_Inventory.org")))
+  (insert "\n")
+  (insert "| Deadline | Activity    | Estimate |\n")
+  (insert "|----------+-------------+----------|\n")
+  (insert "|          | Description |        1 |\n")
+  (insert "|          |             |          |")
+  (goto-char 91))
+
+(defun now ()
+  "Insert string for the current time formatted like '02:34'."
+  (interactive)
+  (insert (format-time-string "%H:%M ")))
+
+(defun today ()
+  "Insert string for today's date formatted like '15-05-2015'."
+  (interactive)
+  (insert (format-time-string "%d-%m-%Y ")))
+
 ;;;;;;;;;;;;;;;;;;;
 ;; Main function ;;
 ;;;;;;;;;;;;;;;;;;;
