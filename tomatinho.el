@@ -117,6 +117,8 @@
   "Tomatinho debugging switch")
 (defvar tomatinho-display-tubes t
   "Tomatinho displaying mode, tubes rather than text.")
+(defvar tomatinho-previous-state 'ok
+  "Tomatinho previous state value")
 ;; §maybe: introduce a prefered mode.
 
 
@@ -271,8 +273,11 @@
   (let ((time (timestamp))
 	(type (car tomatinho-current))
 	(val (cdr tomatinho-current))
-        (tick nil) ;; MXE was here. Instead of:  (tick tomatinho-sound-tick)
-        (tack tomatinho-sound-tack))
+        (tick tomatinho-sound-tick)
+        (tack nil))
+    (if (and (equal type 'pause) (equal tomatinho-previous-state 'ok))
+	(play-sound-file-async tomatinho-sound-tack))
+    (setq tomatinho-previous-state type)
     (when (>= (- time tomatinho-last) (if tomatinho-debug 0 60))
       (setq tomatinho-current (cons type (1+ val)) tomatinho-last time)
       (when (and (equal type 'ok)
