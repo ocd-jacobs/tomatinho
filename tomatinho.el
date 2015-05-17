@@ -48,6 +48,10 @@
   "Time length of a Podomoro round."
   :type 'integer :group 'tomatinho)
 
+(defcustom tomatinho-pause-length 5
+  "Time length of a Podomoro pause."
+  :type 'integer :group 'tomatinho)
+
 (defvar tomatinho-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "q") 'tomatinho-interactive-kill-buffer)
@@ -134,7 +138,8 @@
   (let ((event (if (equal (car tomatinho-current) 'pause) tomatinho-current
                  (cons 'reset (cdr tomatinho-current)))))
     (tomatinho-register-event event '(pause . 0)))
-  (play-sound-file-async tomatinho-sound-tick))
+  (play-sound-file-async tomatinho-sound-tick)
+  (setq tomatinho-seconds-pause 0))
 
 (defun tomatinho-interactive-kill-buffer ()
   "Kills the buffer."
@@ -277,15 +282,20 @@
 	(val (cdr tomatinho-current))
         (tick tomatinho-sound-tick)
         (tack nil))
-    (if (and (equal type 'pause) (equal tomatinho-previous-state 'ok))
-	(play-sound-file-async tomatinho-sound-tack))
-    (if (and (equal type 'pause) (equal tomatinho-previous-state 'pause))
-	(setq tomatinho-seconds-pause (+ tomatinho-seconds-pause 1)))
-    (if (>= tomatinho-seconds-pause 300)
-	(play-sound-file-async tomatinho-sound-tack))
-    (if (>= tomatinho-seconds-pause 300)
-	(setq tomatinho-seconds-pause 0))
+
+    (when (and (equal type 'pause) (equal tomatinho-previous-state 'ok))
+      (play-sound-file-async tomatinho-sound-tack)
+      (setq tomatinho-seconds-pause 0))
+
+    (when (and (equal type 'pause) (equal tomatinho-previous-state 'pause))
+      (setq tomatinho-seconds-pause (+ tomatinho-seconds-pause 1)))
+
+    (when (>= tomatinho-seconds-pause (* tomatinho-pause-length 60))
+      (play-sound-file-async tomatinho-sound-tack)
+      (setq tomatinho-seconds-pause 0))
+
     (setq tomatinho-previous-state type)
+
     (when (>= (- time tomatinho-last) (if tomatinho-debug 0 60))
       (setq tomatinho-current (cons type (1+ val)) tomatinho-last time)
       (when (and (equal type 'ok)
@@ -293,6 +303,7 @@
         (setq tomatinho-events (append tomatinho-events `((ok . ,tomatinho-pomodoro-length)))
               tomatinho-current '(pause . 0)))
       (play-sound-file-async (if (equal (car tomatinho-current) 'ok) tick tack))))
+
   (when (get-buffer tomatinho-buffer)
     (with-current-buffer (get-buffer tomatinho-buffer)
       (unlocking-buffer
