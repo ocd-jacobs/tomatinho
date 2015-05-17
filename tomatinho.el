@@ -25,7 +25,8 @@
 
 ;;; Code:
 
-(require 'cl)
+(with-no-warnings
+  (require 'cl))
 
 
 ;;; Customs
@@ -125,6 +126,7 @@
   "Tomatinho previous state value")
 (defvar tomatinho-seconds-pause 0
   "Tomatinho secons of pause")
+(defvar buffer-undo-tree)
 ;; §maybe: introduce a prefered mode.
 
 
@@ -186,7 +188,7 @@
 
 (defun timestamp ()
   "Returns the timestamp as an integer."
-  (string-to-int (format-time-string "%s")))
+  (string-to-number (format-time-string "%s")))
 
 (defun play-sound-file-async (file)
   "Plys with some overhead, but at least doesn't freeze Emacs."
@@ -201,9 +203,9 @@
 
 (defmacro unlocking-buffer (&rest body)
   "Macro that allows safer manipulation of a read-only buffer."
-  `(progn (toggle-read-only -1)
+  `(progn (read-only-mode -1)
           ,@body
-          (toggle-read-only 1)))
+          (read-only-mode 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Display and updates ;;
