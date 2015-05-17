@@ -119,6 +119,8 @@
   "Tomatinho displaying mode, tubes rather than text.")
 (defvar tomatinho-previous-state 'ok
   "Tomatinho previous state value")
+(defvar tomatinho-seconds-pause 0
+  "Tomatinho secons of pause")
 ;; §maybe: introduce a prefered mode.
 
 
@@ -277,6 +279,12 @@
         (tack nil))
     (if (and (equal type 'pause) (equal tomatinho-previous-state 'ok))
 	(play-sound-file-async tomatinho-sound-tack))
+    (if (and (equal type 'pause) (equal tomatinho-previous-state 'pause))
+	(setq tomatinho-seconds-pause (+ tomatinho-seconds-pause 1)))
+    (if (>= tomatinho-seconds-pause 300)
+	(play-sound-file-async tomatinho-sound-tack))
+    (if (>= tomatinho-seconds-pause 300)
+	(setq tomatinho-seconds-pause 0))
     (setq tomatinho-previous-state type)
     (when (>= (- time tomatinho-last) (if tomatinho-debug 0 60))
       (setq tomatinho-current (cons type (1+ val)) tomatinho-last time)
