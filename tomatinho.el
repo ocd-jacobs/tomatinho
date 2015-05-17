@@ -28,7 +28,6 @@
 (with-no-warnings
   (require 'cl))
 
-
 ;;; Customs
 (defgroup tomatinho nil
   "Customs for `tomatinho' !"
@@ -125,7 +124,7 @@
 (defvar tomatinho-previous-state 'ok
   "Tomatinho previous state value")
 (defvar tomatinho-seconds-pause 0
-  "Tomatinho secons of pause")
+  "Tomatinho seconds of pause")
 (defvar buffer-undo-tree)
 ;; §maybe: introduce a prefered mode.
 
