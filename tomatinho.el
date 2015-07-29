@@ -37,6 +37,14 @@
   "Name of the Tomatinho buffer"
   :type 'string :group 'tomatinho)
 
+(defcustom tomatinho-todo-today "~/To_Do_Today.org"
+  "Name of the Tomatinho To Do Today file"
+  :type 'string :group 'tomatinho)
+
+(defcustom tomatinho-activity-inventory "~/activity-inventory.org"
+  "Name of the Tomatinho Activity Inventory file"
+  :type 'string :group 'tomatinho)
+
 (defvaralias 'tomatinho-buffer 'tomatinho-buffer-name)
 ;; ¤note: might be preferable to refactor the code using this name
 
@@ -322,19 +330,19 @@
 ;; Pomodoro sheets ;;
 ;;;;;;;;;;;;;;;;;;;;;
 
-(defun to_do_today ()
+(defun tomatinho-todo-today ()
   "Create a pomodoro To Do Today buffer."
   (interactive)
-  (switch-to-buffer (set-buffer (find-file "C:/Windows/Temp/To_Do_Today.org")))
+  (switch-to-buffer (set-buffer (find-file tomatinho-todo-today)))
   (insert "* Activity\n")
   (insert "** [] [] []\n")
   (insert "* Unplanned & Urgent\n")
   (goto-char 3))
 
-(defun activity_inventory ()
+(defun tomatinho-activity-inventory ()
   "Create a pomodoro Activity Inventory buffer."
   (interactive)
-  (switch-to-buffer (set-buffer (find-file "C:/Windows/Temp/ Activity_Inventory.org")))
+  (switch-to-buffer (set-buffer (find-file tomatinho-activity-inventory)))
   (insert "\n")
   (insert "| Deadline | Activity    | Estimate |\n")
   (insert "|----------+-------------+----------|\n")
