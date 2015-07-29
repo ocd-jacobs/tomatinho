@@ -334,10 +334,12 @@
   "Create a pomodoro To Do Today buffer."
   (interactive)
   (switch-to-buffer (set-buffer (find-file tomatinho-todo-today)))
-  (insert "* Activity\n")
-  (insert "** [] [] []\n")
-  (insert "* Unplanned & Urgent\n")
-  (goto-char 3))
+  (if (= (buffer-size) 0)
+      (progn (insert "* Activity\n")
+             (insert "** [] [] []\n")
+             (insert "* Unplanned & Urgent\n")
+             (goto-char 3))
+    (goto-char (point-max))))
 
 (defun tomatinho-activity-inventory ()
   "Create a pomodoro Activity Inventory buffer."
