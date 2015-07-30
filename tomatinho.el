@@ -345,12 +345,14 @@
   "Create a pomodoro Activity Inventory buffer."
   (interactive)
   (switch-to-buffer (set-buffer (find-file tomatinho-activity-inventory)))
-  (insert "\n")
-  (insert "| Deadline | Activity    | Estimate |\n")
-  (insert "|----------+-------------+----------|\n")
-  (insert "|          | Description |        1 |\n")
-  (insert "|          |             |          |")
-  (goto-char 91))
+  (if (= (buffer-size) 0)
+      (progn (insert "\n")
+             (insert "| Deadline | Activity    | Estimate |\n")
+             (insert "|----------+-------------+----------|\n")
+             (insert "|          | Description |        1 |\n")
+             (insert "|          |             |          |")
+             (goto-char 91))
+    (goto-char (- (point-max) 1))))
 
 (defun now ()
   "Insert string for the current time formatted like '02:34'."
