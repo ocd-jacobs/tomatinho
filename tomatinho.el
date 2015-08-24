@@ -37,11 +37,11 @@
   "Name of the Tomatinho buffer"
   :type 'string :group 'tomatinho)
 
-(defcustom tomatinho-todo-today "~/To_Do_Today.org"
+(defcustom tomatinho-todo-today "~/to_to_today.org"
   "Name of the Tomatinho To Do Today file"
   :type 'string :group 'tomatinho)
 
-(defcustom tomatinho-activity-inventory "~/activity-inventory.org"
+(defcustom tomatinho-activity-inventory "~/activity_inventory.org"
   "Name of the Tomatinho Activity Inventory file"
   :type 'string :group 'tomatinho)
 
